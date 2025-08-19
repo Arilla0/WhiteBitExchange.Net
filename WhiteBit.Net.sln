@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.6.33829.357
+VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Whitebit.Net", "Whitebit.Net\Whitebit.Net.csproj", "{4E00B047-875A-4AAC-A205-F1EF0DB81FD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhiteBit.Net", "WhiteBit.Net\WhiteBit.Net.csproj", "{C199A488-A9AA-49BE-85F7-BA5ED767F7BF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{5F19EEAE-D4E2-465A-907C-874FC35EE885}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhiteBitExample", "Examples\ConsoleClient\WhiteBitExample.csproj", "{B9E378DF-34FE-412B-80BB-1D74126926D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhiteBit.Net.Example", "WhiteBit.Net.Example\WhiteBit.Net.Example.csproj", "{2474710E-1AD6-49A3-96A9-C5727C4A4E81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,22 +13,25 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4E00B047-875A-4AAC-A205-F1EF0DB81FD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E00B047-875A-4AAC-A205-F1EF0DB81FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E00B047-875A-4AAC-A205-F1EF0DB81FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E00B047-875A-4AAC-A205-F1EF0DB81FD7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9E378DF-34FE-412B-80BB-1D74126926D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9E378DF-34FE-412B-80BB-1D74126926D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9E378DF-34FE-412B-80BB-1D74126926D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9E378DF-34FE-412B-80BB-1D74126926D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C199A488-A9AA-49BE-85F7-BA5ED767F7BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C199A488-A9AA-49BE-85F7-BA5ED767F7BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C199A488-A9AA-49BE-85F7-BA5ED767F7BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C199A488-A9AA-49BE-85F7-BA5ED767F7BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2474710E-1AD6-49A3-96A9-C5727C4A4E81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2474710E-1AD6-49A3-96A9-C5727C4A4E81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2474710E-1AD6-49A3-96A9-C5727C4A4E81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2474710E-1AD6-49A3-96A9-C5727C4A4E81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{B9E378DF-34FE-412B-80BB-1D74126926D0} = {5F19EEAE-D4E2-465A-907C-874FC35EE885}
-	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {C6772B97-910A-4F07-B33E-D5C6097ED1FC}
+		SolutionGuid = {02A74749-80F8-4574-9FEE-FAD693473BC1}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+		version = 0.1.1
 	EndGlobalSection
 EndGlobal

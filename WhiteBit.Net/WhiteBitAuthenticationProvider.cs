@@ -1,74 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
-using WhiteBit.Net.Objects;
 using CryptoExchange.Net;
 using CryptoExchange.Net.Authentication;
-using CryptoExchange.Net.Converters;
 using CryptoExchange.Net.Objects;
+using Newtonsoft.Json;
 
 namespace WhiteBit.Net
 {
     internal class WhiteBitAuthenticationProvider : AuthenticationProvider
     {
-        public string GetApiKey() => _credentials.Key!.GetString();
+        private static readonly object nonceLock = new object();
+        private static long lastNonce;
+        internal static string Nonce
+        {
+            get
+            {
+                lock (nonceLock)
+                {
+                    var nonce = (long)Math.Round((DateTime.UtcNow - DateTime.UnixEpoch).TotalMilliseconds);
+                    if (nonce <= lastNonce)
+                        nonce++;
+
+                    lastNonce = nonce;
+                    return lastNonce.ToString(CultureInfo.InvariantCulture);
+                }
+            }
+        }
+
+        public ApiCredentials Credentials { get;  set; }
 
         public WhiteBitAuthenticationProvider(ApiCredentials credentials) : base(credentials)
         {
+            Credentials = credentials;
         }
 
         public override void AuthenticateRequest(RestApiClient apiClient, Uri uri, HttpMethod method, Dictionary<string, object> providedParameters, bool auth, ArrayParametersSerialization arraySerialization, HttpMethodParameterPosition parameterPosition, out SortedDictionary<string, object> uriParameters, out SortedDictionary<string, object> bodyParameters, out Dictionary<string, string> headers)
         {
             uriParameters = parameterPosition == HttpMethodParameterPosition.InUri ? new SortedDictionary<string, object>(providedParameters) : new SortedDictionary<string, object>();
             bodyParameters = parameterPosition == HttpMethodParameterPosition.InBody ? new SortedDictionary<string, object>(providedParameters) : new SortedDictionary<string, object>();
-            headers = new Dictionary<string, string>() { { "X-MBX-APIKEY", _credentials.Key!.GetString() } };
+            headers = new Dictionary<string, string>();
 
-            if (!auth)
+            if (!auth || method != HttpMethod.Post)
                 return;
 
-            var parameters = parameterPosition == HttpMethodParameterPosition.InUri ? uriParameters : bodyParameters;
-            var timestamp = GetMillisecondTimestamp(apiClient);
-            parameters.Add("timestamp", timestamp);
+            bodyParameters.Add("request", uri.ToString().Split(uri.Host, StringSplitOptions.None)[1]);
+            bodyParameters.Add("nonce", Nonce);
 
-            if (_credentials.CredentialType == ApiCredentialsType.Hmac)
-            {
-                uri = uri.SetParameters(uriParameters, arraySerialization);
-                parameters.Add("signature", SignHMACSHA256(parameterPosition == HttpMethodParameterPosition.InUri ? uri.Query.Replace("?", "") : parameters.ToFormData()));
-            }
-            else
-            {
-                var parameterString = parameters.ToFormData();
-                var sign = SignRSASHA256(Encoding.ASCII.GetBytes(parameterString), SignOutputType.Base64);
-                parameters.Add("signature", sign);
-            }
+            headers.Add("X-TXC-APIKEY", Credentials.Key!.GetString());
+            var payload = JsonConvert.SerializeObject(bodyParameters);
+            var encodedPayload = Base64Encode(payload);
+            headers.Add("X-TXC-PAYLOAD", encodedPayload);
+            // lower case is necessary here but not documented
+            headers.Add("X-TXC-SIGNATURE", SignHMACSHA512(encodedPayload).ToLower());
+        
+        
         }
-
-        public Dictionary<string, object> AuthenticateSocketParameters(Dictionary<string, object> providedParameters)
+        private string Base64Encode(string plainText)
         {
-            var sortedParameters = new SortedDictionary<string, object>(providedParameters)
-            {
-                { "apiKey", _credentials.Key!.GetString() },
-                { "timestamp", DateTimeConverter.ConvertToMilliseconds(DateTime.UtcNow) }
-            };
-            var paramString = string.Join("&", sortedParameters.Select(p => p.Key + "=" + Convert.ToString(p.Value, CultureInfo.InvariantCulture)));
-
-            if (_credentials.CredentialType == ApiCredentialsType.Hmac)
-            {
-                var sign = SignHMACSHA256(paramString);
-                var result = sortedParameters.ToDictionary(p => p.Key, p => p.Value);
-                result.Add("signature", sign);
-                return result;
-            }
-            else
-            {
-                var sign = SignRSASHA256(Encoding.ASCII.GetBytes(paramString), SignOutputType.Base64);
-                var result = sortedParameters.ToDictionary(p => p.Key, p => p.Value);
-                result.Add("signature", sign);
-                return result;
-            }
+            var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+            return Convert.ToBase64String(plainTextBytes);
         }
     }
 }

@@ -1,58 +1,27 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-    <LangVersion>8.0</LangVersion>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ReleaseVersion>0.1.28</ReleaseVersion>
+    <Version>0.1.28</Version>
+		<FileVersion>0.1.28</FileVersion>
+		<PackageVersion>0.1.28</PackageVersion>
+		<AssemblyVersion>0.1.28</AssemblyVersion>
+		<Configurations>Release;Debug</Configurations>
   </PropertyGroup>
-  <PropertyGroup>
-    <PackageId>WhiteBit.Net</PackageId>
-    <Authors>JKorf</Authors>
-    <PackageVersion>9.1.2</PackageVersion>
-    <AssemblyVersion>9.1.2</AssemblyVersion>
-    <FileVersion>9.1.2</FileVersion>
-    <Description>WhiteBit.Net is a .Net wrapper for the WhiteBit API, including WhiteBit Futures. It includes all features the API provides, REST API and Websocket, using clear and readable objects including but not limited to Reading market info, Placing and managing orders and Reading balances and funds</Description>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageTags>WhiteBit WhiteBit.Net C# .Net CryptoCurrency Exchange API wrapper</PackageTags>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/JKorf/WhiteBit.Net.git</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/JKorf/WhiteBit.Net</PackageProjectUrl>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <NeutralLanguage>en</NeutralLanguage>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes>9.1.2 - Added GoodTillDate TimeInForce enum value, fixing UsdFutures.ExchangeData.GetExchangeInfoAsync endpoint deserialization error</PackageReleaseNotes>
-  </PropertyGroup>
-  <PropertyGroup Label="Deterministic Build" Condition="'$(Configuration)' == 'Release'">
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-  </PropertyGroup>
-  <ItemGroup Label="Deterministic Build" Condition="'$(Configuration)' == 'Release'">
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-  <PropertyGroup>
-    <DocumentationFile>WhiteBit.Net.xml</DocumentationFile>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Icon\icon.png" Pack="true" PackagePath="\" />
+    <Folder Include="Objects\Socket\" />
   </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="CryptoExchange.Net" Version="6.1.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="CryptoExchange.Net" Version="6.2.4" />
   </ItemGroup>
-  <ItemGroup>
-    <DocFileItem Remove="WhiteBit.Net.xml" />
-  </ItemGroup>
+
 </Project>
